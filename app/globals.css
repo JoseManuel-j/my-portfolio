@@ -1,26 +1,148 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-bg: #0B0F19;
+  --color-bg-elevated: #121826;
+  --color-bg-card: #161D2E;
+
+  --color-border: #232B40;
+  --color-border-soft: #1A2136;
+
+  --color-ink-primary: #ECEEF3;
+  --color-ink-secondary: #9AA3B8;
+  --color-ink-muted: #64708A;
+
+  --color-gold: #E4B368;
+  --color-gold-dim: #B08A4E;
+  --color-gold-soft: #F3D9A8;
+
+  --color-teal: #5FA8A0;
+  --color-teal-dim: #3F7E77;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    @apply bg-bg text-ink-primary antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(228, 179, 104, 0.08), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 20%, rgba(95, 168, 160, 0.06), transparent);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: rgba(228, 179, 104, 0.25);
+    color: #f3d9a8;
+  }
+
+  :focus-visible {
+    outline: 2px solid #e4b368;
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-6 md:px-10;
+  }
+
+  .eyebrow {
+    @apply font-mono text-[13px] tracking-wide text-gold;
+  }
+
+  .section-pad {
+    @apply py-24 md:py-32;
+  }
+
+  /* Terminal window signature element (hero) */
+  .terminal {
+    @apply rounded-lg border border-border bg-bg-card shadow-[0_0_0_1px_rgba(255,255,255,0.02),0_20px_60px_-20px_rgba(0,0,0,0.6)];
+  }
+
+  .terminal-bar {
+    @apply flex items-center gap-2 border-b border-border px-4 py-3;
+  }
+
+  .terminal-dot {
+    @apply h-2.5 w-2.5 rounded-full;
+  }
+
+  .cursor::after {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 1.1em;
+    margin-left: 2px;
+    background: #e4b368;
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+
+  /* Commit-log list (certificates) */
+  .commit-log {
+    @apply relative border-l border-border pl-8;
+  }
+
+  .commit-node {
+    @apply absolute -left-[9px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full border border-gold-dim bg-bg;
+  }
+
+  .commit-node::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: #e4b368;
+  }
+
+  .tag {
+    @apply rounded-md border border-border bg-bg-elevated px-2.5 py-1 font-mono text-xs text-ink-secondary;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-gold px-5 py-3 font-sans text-sm font-medium text-bg transition-colors hover:bg-gold-soft;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-border px-5 py-3 font-sans text-sm font-medium text-ink-primary transition-colors hover:border-gold-dim hover:text-gold;
+  }
+
+  .card {
+    @apply rounded-lg border border-border bg-bg-card;
+  }
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes fade-up {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
